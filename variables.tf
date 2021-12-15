@@ -13,8 +13,8 @@ variable "virtual_network_name" {
   type        = string
 }
 
-variable "subnet_cidr" {
-  description = "CIDR of the subnet"
+variable "address_prefixes" {
+  description = "Address prefixes of the subnet"
   type        = list(string)
 }
 
