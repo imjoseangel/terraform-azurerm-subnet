@@ -3,7 +3,7 @@ variable "name" {
   type        = string
 }
 
-variable "resource_group_name" {
+variable "resource_group" {
   description = "Name of Azure Resource Group for the subnet"
   type        = string
 }

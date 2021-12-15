@@ -9,7 +9,7 @@ data "azurerm_virtual_network" "main" {
   resource_group_name = data.azurerm_resource_group.main.name
 }
 
-resource "azure_subnet" "main" {
+resource "azurerm_subnet" "main" {
   name                 = var.name
   resource_group_name  = data.azurerm_resource_group.main.name
   virtual_network_name = data.azurerm_virtual_network.main.name
@@ -24,8 +24,8 @@ resource "azure_subnet" "main" {
       dynamic "service_delegation" {
         for_each = toset(delegation.value)
         content {
-          name  = service_delegation.value.name
-          value = service_delegation.value.action
+          name    = service_delegation.value.name
+          actions = service_delegation.value.actions
         }
       }
     }
@@ -41,22 +41,19 @@ data "azurerm_network_security_group" "main" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "main" {
-  count = var.network_security_group_name == null ? 0 : 1
-
+  count                     = var.network_security_group_name == null ? 0 : 1
   subnet_id                 = azurerm_subnet.main.id
-  network_security_group_id = data.azurerm_network_security_group.main.id
+  network_security_group_id = data.azurerm_network_security_group.main[count.index].id
 }
 
 data "azurerm_route_table" "main" {
-  count = var.route_table_name == null ? 0 : 1
-
-  name                = var.azurerm_route_table
+  count               = var.route_table_name == null ? 0 : 1
+  name                = var.route_table_name
   resource_group_name = var.udr_resource_group
 }
 
 resource "azurerm_subnet_route_table_association" "main" {
-  count = var.route_table_name == null ? 0 : 1
-
+  count          = var.route_table_name == null ? 0 : 1
   subnet_id      = azurerm_subnet.main.id
-  route_table_id = data.azurerm_route_table.main.id
+  route_table_id = data.azurerm_route_table.main[count.index].id
 }
