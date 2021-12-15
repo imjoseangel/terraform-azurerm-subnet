@@ -22,5 +22,5 @@ output "subnet_names" {
 
 output "subnet_ips" {
   description = "The collection of IPs within this subnet"
-  value       = var.subnet_cidr[*]
+  value       = var.address_prefixes[*]
 }
