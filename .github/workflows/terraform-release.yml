@@ -31,7 +31,7 @@ jobs:
 
           [![Terraform](https://github.com/imjoseangel/terraform-azurerm-subnet/actions/workflows/terraform.yml/badge.svg)](https://github.com/imjoseangel/terraform-azurerm-subnet/actions/workflows/terraform.yml)
 
-          A [Terraform][2] module to deploys a subnet cluster on Azure.
+          A [Terraform][2] module to deploys a subnet on Azure.
 
           By [imjoseangel][3]
 
