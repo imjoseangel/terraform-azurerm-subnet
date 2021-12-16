@@ -4,7 +4,7 @@
 
 ## Deploys a subnet on Azure with route table and network security group
 
-This Terraform module deploys a subnet cluster on Azure
+This Terraform module deploys a subnet on Azure
 
 ### NOTES
 
