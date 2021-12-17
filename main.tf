@@ -56,4 +56,7 @@ resource "azurerm_subnet_route_table_association" "main" {
   count          = var.route_table_name == null ? 0 : 1
   subnet_id      = azurerm_subnet.main.id
   route_table_id = data.azurerm_route_table.main[count.index].id
+  lifecycle {
+    ignore_changes = [route_table_id]
+  }
 }
