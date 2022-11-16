@@ -1,15 +1,35 @@
-data "azurerm_resource_group" "main" {
-  name = var.resource_group
+#-------------------------------
+# Local Declarations
+#-------------------------------
+locals {
+  resource_group_name = element(coalescelist(data.azurerm_resource_group.rgrp[*].name, azurerm_resource_group.rg[*].name, [""]), 0)
+  location            = element(coalescelist(data.azurerm_resource_group.rgrp[*].location, azurerm_resource_group.rg[*].location, [""]), 0)
+}
+
+#---------------------------------------------------------
+# Resource Group Creation or selection - Default is "true"
+#---------------------------------------------------------
+data "azurerm_resource_group" "rgrp" {
+  count = var.create_resource_group == false ? 1 : 0
+  name  = var.resource_group_name
+}
+
+resource "azurerm_resource_group" "rg" {
+  #ts:skip=AC_AZURE_0389 RSG lock should be skipped for now.
+  count    = var.create_resource_group ? 1 : 0
+  name     = lower(var.resource_group_name)
+  location = var.location
+  tags     = merge({ "ResourceName" = format("%s", var.resource_group_name) }, var.tags, )
 }
 
 data "azurerm_virtual_network" "main" {
   name                = var.virtual_network_name
-  resource_group_name = data.azurerm_resource_group.main.name
+  resource_group_name = var.vnet_resource_group_name
 }
 
 resource "azurerm_subnet" "main" {
   name                 = lower(var.name)
-  resource_group_name  = data.azurerm_resource_group.main.name
+  resource_group_name  = local.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.main.name
   address_prefixes     = var.address_prefixes
 
@@ -35,7 +55,7 @@ resource "azurerm_subnet" "main" {
 data "azurerm_network_security_group" "main" {
   count               = var.network_security_group_name == null ? 0 : 1
   name                = var.network_security_group_name
-  resource_group_name = var.nsg_resource_group
+  resource_group_name = local.resource_group_name
 }
 
 resource "azurerm_subnet_network_security_group_association" "main" {
@@ -47,7 +67,7 @@ resource "azurerm_subnet_network_security_group_association" "main" {
 data "azurerm_route_table" "main" {
   count               = var.route_table_name == null ? 0 : 1
   name                = var.route_table_name
-  resource_group_name = var.udr_resource_group
+  resource_group_name = local.resource_group_name
 }
 
 resource "azurerm_subnet_route_table_association" "main" {

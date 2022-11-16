@@ -3,8 +3,25 @@ variable "name" {
   type        = string
 }
 
-variable "resource_group" {
+variable "create_resource_group" {
+  description = "Whether to create resource group and use it for all network resources"
+  default     = true
+  type        = bool
+}
+
+variable "resource_group_name" {
   description = "Name of Azure Resource Group for the subnet"
+  type        = string
+}
+
+variable "vnet_resource_group_name" {
+  description = "Name of Azure Resource Group for the vnet"
+  type        = string
+}
+
+variable "location" {
+  description = "The location/region to keep all your network resources. To get the list of all locations with table format from azure cli, run 'az account list-locations -o table'"
+  default     = "westeurope"
   type        = string
 }
 
@@ -50,20 +67,14 @@ variable "network_security_group_name" {
   default     = null
 }
 
-variable "nsg_resource_group" {
-  description = "Name of the resource group for the network security group"
-  type        = string
-  default     = null
-}
-
 variable "route_table_name" {
   description = "Name of the route table to associate with the subnet"
   type        = string
   default     = null
 }
 
-variable "udr_resource_group" {
-  description = "Name of the resource group for the route table"
-  type        = string
-  default     = null
+variable "tags" {
+  description = "Tags to apply to all resources created."
+  type        = map(string)
+  default     = {}
 }
