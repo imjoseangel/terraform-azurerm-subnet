@@ -29,7 +29,7 @@ resource "azurerm_subnet" "main" {
     }
   }
 
-  enforce_private_link_endpoint_network_policies = var.enforce_private_link
+  private_endpoint_network_policies_enabled = var.enforce_private_link
 }
 
 data "azurerm_network_security_group" "main" {
