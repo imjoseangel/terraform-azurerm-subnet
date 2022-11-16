@@ -29,7 +29,7 @@ data "azurerm_virtual_network" "main" {
 
 resource "azurerm_subnet" "main" {
   name                 = lower(var.name)
-  resource_group_name  = local.resource_group_name
+  resource_group_name  = var.vnet_resource_group_name
   virtual_network_name = data.azurerm_virtual_network.main.name
   address_prefixes     = var.address_prefixes
 
