@@ -49,6 +49,8 @@ resource "azurerm_subnet" "main" {
   }
 
   private_link_service_network_policies_enabled = var.private_link_policies
+  private_endpoint_network_policies             = var.private_endpoint_network_policies
+
 }
 
 data "azurerm_network_security_group" "main" {
