@@ -55,7 +55,7 @@ variable "subnet_delegation" {
   default     = {}
 }
 
-variable "enforce_private_link" {
+variable "private_link_policies" {
   description = "Enable or disable network policies for private link on the subnet"
   type        = bool
   default     = true
